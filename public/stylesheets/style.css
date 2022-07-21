@@ -1,0 +1,64 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  text-align: center;
+  background: url(../images/bgc.jpg) no-repeat fixed center top;
+  background-size: cover;
+
+}
+
+h2 {
+  color: blue;
+}
+
+a {
+  color: #00B7FF;
+  text-decoration: none;
+}
+
+input[type = text] {
+  border-radius: 4px;
+  /* display: block; */
+  height: 2.5em;
+  
+}
+
+input[type = checkbox] {
+  cursor: pointer; /*显示手指*/
+  position: relative;
+  width: 24px;
+  height: 24px;
+  font-size: 20px;
+  display: inline-block;
+}
+
+
+input[type = checkbox]::after {
+  position: absolute;
+  top: 0;
+  border-color: #000;
+  color: white;
+  width: 15px;
+}
+
+
+/*提交框设置*/
+.form-submit,
+  .form-submit1{
+  font-size: 24px;
+  border-radius: 8px;
+  border: 2px solid black;
+}
+
+
+
+
+.form-submit1:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24);
+}
+
+span {
+  font: normal 500 24px "Microsoft Yahei";
+}
+
+
