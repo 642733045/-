@@ -66,10 +66,8 @@ router.get('/timehot', function(request, response) {
       "from fetches where keywords like '%" + request.query.keywords + "%' group by source_name;";
       
   console.log(fetchSql);
-  console.log("*****");
   mysql.query(fetchSql, function(err, result, fields) {
     if (err) throw err;
-    console.log("*****");
       response.writeHead(200, {
           "Content-Type": "application/json"
       });

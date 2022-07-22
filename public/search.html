@@ -7,9 +7,10 @@
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
     <link rel="stylesheet" href="./stylesheets/style.css" />
     <title>Document</title>
-    <!-- <script src="../node_modules/echarts/dist/echarts.common.min.js"></script> -->
-     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@4.7.0/dist/echarts.min.js"></script>
-
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/echarts@4.7.0/dist/echarts.min.js"
+    ></script>
   </head>
   <body>
     <h2>新闻内容检索</h2>
@@ -31,14 +32,13 @@
     </form>
 
     <!-- 热度分析 -->
-    <!-- <a href="localhost:3000/echarts.html">热度分析</a> -->
     <form>
       <br />
       <input
         class="div1"
         type="text"
         name="word"
-        placeholder="请输入您想进行时间热度分析的关键词"
+        placeholder="请输入时间热度分析的关键词"
       />
       <br />
       <input class="form-submit" type="button" name="timely" value="查询" />
@@ -47,7 +47,7 @@
     <!-- 表格数据 -->
     <div class="cardLayout" style="margin: 10px 0px">
       <table width="100%" id="record2"></table>
-      <div id = "tail">
+      <div id="tail">
         当前<input id="current" />页 每页20条 数据总量<input id="sjzl" />
         <a href="#" id="btn1">首页</a>
         <a href="#" id="btn2">上一页</a>
@@ -59,57 +59,17 @@
         <a href="#" id="btn5">跳转</a>
       </div>
     </div>
-
+    <br>
+    <br>
+    <br>
     <!-- 画布 -->
-    <div id="main" style="width: 600px; height: 400px"></div> 
-        <div id="main" style="width: 600px; height: 400px"></div>
-
-    <!-- <script type="text/javascript">
-      // 基于准备好的dom，初始化echarts实例
-      var myChart = echarts.init(document.getElementById('main'));
-
-      // 指定图表的配置项和数据
-      option = {
-  title: {
-    text: 'Referer of a Website',
-    subtext: 'Fake Data',
-    left: 'center'
-  },
-  tooltip: {
-    trigger: 'item'
-  },
-  legend: {
-    orient: 'vertical',
-    left: 'left'
-  },
-  series: [
-    {
-      name: 'Access From',
-      type: 'pie',
-      radius: '50%',
-      data: [
-        { value: 1048, name: 'Search Engine' },
-        { value: 735, name: 'Direct' },
-        { value: 580, name: 'Email' },
-        { value: 484, name: 'Union Ads' },
-        { value: 300, name: 'Video Ads' }
-      ],
-      emphasis: {
-        itemStyle: {
-          shadowBlur: 10,
-          shadowOffsetX: 0,
-          shadowColor: 'rgba(0, 0, 0, 0.5)'
-        }
-      }
-    }
-  ]
-}; -->
-      <!-- myChart.setOption(option);
-    </script> -->
+    <div>
+      <span id="main1"> </span>
+      <span id="main2" style="width: 600px; height: 400px"> </span>
+    </div>
 
     <script>
       $(document).ready(function () {
-        
         $(".form-submit1").click(function () {
           var title = $("input.form1").is(":checked");
           var keywords = $("input.form2").is(":checked");
@@ -122,7 +82,6 @@
             alert("请至少选择一项作为搜索范围");
             return;
           }
-          //  $(".form-submit1").click(function () {
 
           $.get(
             "/process_get?title=" +
@@ -153,8 +112,8 @@
                 $("#record2").append(table + "</td></tr>");
               } //for循环结束
 
-              $('#tail').show();
-
+              $("#record2").show();
+              $("#tail").show();
               display();
               function display() {
                 var pageSize = 20; // 每页的记录条数
@@ -250,7 +209,81 @@
           );
         });
 
+        //处理热度分析
+        $(".form-submit").click(function () {
+          $("#record2").hide();
+          $("#tail").hide();
+          $.get("/timehot?keywords=" + $(".div1").val(), function (data) {
+            //获取数据
+            var names = new Array(); //存取新闻名字
+            var nums = new Array(); //存取新闻条数
 
+            for (list of data) {
+              //console.log(list);
+              names.push(list.source_name);
+              nums.push(list.num);
+            } //for循环结束
+            //console.log(names);
+
+            //初试化echarts实例对象
+            var myChart1 = echarts.init(document.getElementById("main1"));
+
+            var option1 = {
+              title: {
+                text: "数据占比",
+              },
+              tooltip: {},
+              legend: {
+                data: [names[0], names[1], names[2]],
+              },
+              series: [
+                {
+                  type: "pie",
+                  radius: "50%",
+                  data: [
+                    { value: nums[0], name: names[0] },
+                    { value: nums[1], name: names[1] },
+                    { value: nums[2], name: names[2] },
+                  ],
+                },
+              ],
+              emphasis: {
+                itemStyle: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: "rgba(0,0,0,0.5)",
+                },
+              },
+            };
+            myChart1.setOption(option1);
+
+            var myChart2 = echarts.init(document.getElementById("main2"));
+            var option2 = {
+              title: {
+                text: "新闻总数量",
+              },
+              tooltip: {},
+              xAxis: {
+                type: "category",
+                data: ["中国新闻网", "搜狐新闻", "新浪新闻"],
+              },
+              yAxis: {
+                type: "value",
+              },
+              series: [
+                {
+                  type: "bar",
+                  showBackground: true,
+                  backgroundStyle: {
+                    color: "rgba(180, 180, 180, 0.2)",
+                  },
+                  data: [451, 505, 36],
+                },
+              ],
+            };
+            myChart2.setOption(option2);
+          }); //请求结束
+        }); //点击回调函数结束
       });
     </script>
   </body>
