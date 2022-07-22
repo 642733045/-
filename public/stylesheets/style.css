@@ -7,13 +7,21 @@ body {
 
 }
 
+#tail {
+  display: none;
+}
+
 h2 {
-  color: blue;
+  color: rgb(29, 175, 194);
 }
 
 a {
   color: #00B7FF;
   text-decoration: none;
+}
+
+a:hover {
+  color: yellow;
 }
 
 input[type = text] {
